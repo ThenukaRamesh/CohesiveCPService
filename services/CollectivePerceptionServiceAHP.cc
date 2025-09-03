@@ -1,7 +1,7 @@
 /*
  * Artery V2X Simulation Framework
  * Copyright 2019 Raphael Riebl et al.
- * Licensed under GPLv2, see COPYING file for detailed license and warranty terms.
+ * The code is modified to CPM prioritizing optimization with AHP algorithm and to generate results CSV files by the authors Thenuka Karunatilake (thenukaramesh@gmail.com) and Akhil Neela (akhilsimha74@gmail.com)
  */
 
 #include "artery/envmod/sensor/FovSensor.h"
@@ -40,12 +40,6 @@ int CPMsfromVehicles = 0;
 std::ofstream DelayAHP;
 std::ofstream AwarenessAHP;
 std::ofstream CPMDataAHP;
-
-//std::ofstream CPMstatsV2V ("results/utility/CPMstatsV2V.csv");
-//std::ofstream CPMstatstotal ("results/utility/CPMstatstotal.csv");
-//std::ofstream CPMstatsforRSUmessages ("results/utility/CPMstatsforRSUmessages.csv");
-//std::ofstream VehicletransmittedCPMS ("results/utility/VehicletransmittedCPMS.csv");
-//int CPMsfromVehicles=0;
 
 
 namespace artery {
@@ -314,45 +308,13 @@ void CollectivePerceptionServiceAHP::trigger() {
     double importanceRatio = static_cast<double>(radarStationIDs.size()) / static_cast<double>(mergedStationIDs.size());
     double uniquenessRatio = static_cast<double>(numDifferences) / static_cast<double>(mergedStationIDs.size());
 
-    // -- Enable the below section to test the optimal operation of Algorithm using SeeThrough Sensor---- //
-    // std::unordered_set<int> STIDs = getNeighboursStationIDs(allObjects, "see-through"); // ST
-    // std::unordered_set<int> STnewMergedStationIDs; //ST
-    // std::vector<int> STdifferences; //ST
-    // for (int STstationID : STIDs) {
-    //     if (STprevMergedStationIDs.find(STstationID) == STprevMergedStationIDs.end()) {
-    //         STdifferences.push_back(STstationID);
-    //     }
-    //     STnewMergedStationIDs.insert(STstationID);
-    // }
-    // int STnumDifferences = STdifferences.size();
-
-    // STprevMergedStationIDs.clear();
-    // // Update prevMergedStationIDs with the current set for the next call
-    // STprevMergedStationIDs = STnewMergedStationIDs;
-    // double importanceRatio = static_cast<double>(radarStationIDs.size()) / static_cast<double>(STIDs.size());
-    // double uniquenessRatio = static_cast<double>(STnumDifferences) / static_cast<double>(STIDs.size());
-
 
     // AHP Algorithm Implementation ---------------------
 
     // Define the input values
     std::vector<double> inputs = {importanceRatio, uniquenessRatio, hotspot};
-    //  //Case I
-    //  std::vector<std::vector<double>> comparisonMatrix = {
-    //      {1.0, 3.0, 7.0},
-    //      {1.0 / 3.0, 1.0, 5.0},
-    //      {1.0 / 7.0, 1.0 / 5.0, 1.0}
-    //  };
-
-    // // // //  // Case II
-    // // //     std::vector<std::vector<double>> comparisonMatrix = {
-    // // //     {1.0, 1.0 / 3.0, 5.0},
-    // // //     {3.0, 1.0, 7.0},
-    // // //     {1.0 / 5.0, 1.0/7.0, 1.0}
-    // // // };
-
-
-    //  //Case - III
+    
+    //  comparison matrix
     std::vector<std::vector<double>> comparisonMatrix = {
         {1.0, 5.0, 1.0 / 7.0},
         {1.0 / 5.0, 1.0, 1.0 / 3.0},
