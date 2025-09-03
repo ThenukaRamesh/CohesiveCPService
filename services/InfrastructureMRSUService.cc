@@ -1,7 +1,7 @@
 /*
  * Artery V2X Simulation Framework
  * Copyright 2019 Raphael Riebl et al.
- * Licensed under GPLv2, see COPYING file for detailed license and warranty terms.
+ * The code is modified to handle mobile RSU-assisted CPM dissemination by the authors Thenuka Karunathilake (thenukaramesh@gmail.com)
  */
 
 #include "artery/application/InfrastructureMRSUService.h"
